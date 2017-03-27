@@ -19,6 +19,23 @@ namespace FallingWorld
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        enum GameState
+        {
+            MainMenu,
+            SelectPlayer,
+            Playing
+        }
+
+        GameState CurrentGameState = GameState.MainMenu;
+        int screenWidth = 800;
+        int screenHeight = 600;
+
+        cButton btnPlay;
+        cButton btnExit;
+        cButton btnPlayerD;
+        cButton btnPlayerL;
+        cButton btnBack;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -47,7 +64,22 @@ namespace FallingWorld
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
+            //graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
+            IsMouseVisible = true;
+
+            btnPlay = new cButton(Content.Load<Texture2D>("PlayButton"), graphics.GraphicsDevice, graphics.GraphicsDevice.Viewport.Width / 4, graphics.GraphicsDevice.Viewport.Height / 30);
+            btnPlay.setPosition(new Vector2(100, 500));
+            btnExit = new cButton(Content.Load<Texture2D>("ExitButton"), graphics.GraphicsDevice, graphics.GraphicsDevice.Viewport.Width / 4, graphics.GraphicsDevice.Viewport.Height / 30);
+            btnExit.setPosition(new Vector2(500, 500));
+
+            btnPlayerD = new cButton(Content.Load<Texture2D>("Deadpool 256"), graphics.GraphicsDevice, 256, 256);
+            btnPlayerD.setPosition(new Vector2(100, 300));
+
+            btnPlayerL = new cButton(Content.Load<Texture2D>("Link 256"), graphics.GraphicsDevice, 256, 256);
+            btnPlayerL.setPosition(new Vector2(500, 300));
         }
 
         /// <summary>
@@ -70,6 +102,24 @@ namespace FallingWorld
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            MouseState mouse = Mouse.GetState();
+
+            switch (CurrentGameState)
+            {
+                case GameState.MainMenu:
+                    if (btnPlay.isCLicked) CurrentGameState = GameState.SelectPlayer;
+                    if (btnExit.isCLicked) this.Exit();
+                    btnPlay.Update(mouse);
+                    btnExit.Update(mouse);
+                    break;
+                case GameState.SelectPlayer:
+                    btnPlayerD.Update(mouse);
+                    btnPlayerL.Update(mouse);
+                    break;
+                case GameState.Playing:
+                    
+                    break;
+            }
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -82,10 +132,26 @@ namespace FallingWorld
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
 
-            // TODO: Add your drawing code here
+            switch (CurrentGameState)
+            {
+                case GameState.MainMenu:
+                    spriteBatch.Draw(Content.Load<Texture2D>("MainMenu"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    btnPlay.Draw(spriteBatch);
+                    btnExit.Draw(spriteBatch);
+                    break;
+                case GameState.SelectPlayer:
+                    spriteBatch.Draw(Content.Load<Texture2D>("SelectPlayer"), new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    btnPlayerD.Draw(spriteBatch);
+                    btnPlayerL.Draw(spriteBatch);
+                    break;
+                case GameState.Playing:
+                    break;
+            }
 
             base.Draw(gameTime);
+            spriteBatch.End();
         }
     }
 }
