@@ -113,6 +113,7 @@ namespace FallingWorld
                     btnExit.Update(mouse);
                     break;
                 case GameState.SelectPlayer:
+                    if (btnPlayerD.isCLicked || btnPlayerL.isCLicked) CurrentGameState = GameState.Playing;
                     btnPlayerD.Update(mouse);
                     btnPlayerL.Update(mouse);
                     break;
