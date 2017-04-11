@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FallingWorld", "FallingWorld\FallingWorld\FallingWorld.csproj", "{3F3670B9-07F9-431D-8707-5965D0DD3C29}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "FallingWorldContent", "FallingWorld\FallingWorldContent\FallingWorldContent.contentproj", "{97587149-8D6E-423B-B0CB-95ED7775E85F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FallingWorldContent", "FallingWorld\FallingWorldContent\FallingWorldContent.contentproj", "{97587149-8D6E-423B-B0CB-95ED7775E85F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

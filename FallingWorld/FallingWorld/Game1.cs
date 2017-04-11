@@ -19,6 +19,11 @@ namespace FallingWorld
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private Texture2D _tileTexture, _jumperTexture;
+        private Jumper jumper;
+
+        private Board board;
+
         enum GameState
         {
             MainMenu,
@@ -27,8 +32,8 @@ namespace FallingWorld
         }
 
         GameState CurrentGameState = GameState.MainMenu;
-        int screenWidth = 800;
-        int screenHeight = 600;
+        int screenWidth = 960;
+        int screenHeight = 640;
 
         cButton btnPlay;
         cButton btnExit;
@@ -42,23 +47,12 @@ namespace FallingWorld
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+        
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -80,22 +74,18 @@ namespace FallingWorld
 
             btnPlayerL = new cButton(Content.Load<Texture2D>("Link 256"), graphics.GraphicsDevice, 256, 256);
             btnPlayerL.setPosition(new Vector2(500, 300));
+
+            _tileTexture = Content.Load<Texture2D>("tile");
+            _jumperTexture = Content.Load<Texture2D>("jumper");
+            jumper = new Jumper(_jumperTexture, new Vector2(50, 50), spriteBatch);
+            board = new Board(spriteBatch, _tileTexture, 15, 10);
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+           
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
@@ -118,7 +108,7 @@ namespace FallingWorld
                     btnPlayerL.Update(mouse);
                     break;
                 case GameState.Playing:
-                    
+                    jumper.Update(gameTime);
                     break;
             }
             // TODO: Add your update logic here
@@ -126,10 +116,6 @@ namespace FallingWorld
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -148,6 +134,11 @@ namespace FallingWorld
                     btnPlayerL.Draw(spriteBatch);
                     break;
                 case GameState.Playing:
+                    GraphicsDevice.Clear(Color.WhiteSmoke);
+                    base.Draw(gameTime);
+                    board.Draw();
+                    jumper.Draw();
+                    
                     break;
             }
 
