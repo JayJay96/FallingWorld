@@ -78,7 +78,7 @@ namespace FallingWorld
             btnPlayerL.setPosition(new Vector2(500, 300));
 
             _tileTexture = Content.Load<Texture2D>("tile");
-            _jumperTexture = Content.Load<Texture2D>("jumper");
+            _jumperTexture = Content.Load<Texture2D>("DeadpoolLittle");
             jumper = new Jumper(_jumperTexture, new Vector2(50, 50), spriteBatch);
             board = new Board(spriteBatch, _tileTexture, 15, 10);
 
