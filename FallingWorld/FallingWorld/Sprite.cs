@@ -12,6 +12,14 @@ namespace FallingWorld
         public Vector2 Position { get; set; }
         public Texture2D Texture { set; get; }
         public SpriteBatch SpriteBatch { get; set; }
+        public Rectangle Bounds
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y,
+                          Texture.Width, Texture.Height);
+            }
+        }
 
         public Sprite(Texture2D texture, Vector2 position, SpriteBatch batch)
         {

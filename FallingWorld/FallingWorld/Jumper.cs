@@ -11,6 +11,7 @@ using System.Text;
 class Jumper : Sprite
 {
     public Vector2 Movement { get; set; }
+    private Vector2 oldPosition;
 
     public Jumper(Texture2D texture, Vector2 position, SpriteBatch spritebatch)
         : base(texture, position, spritebatch)
@@ -21,8 +22,22 @@ class Jumper : Sprite
     public void Update(GameTime gameTime)
     {
         CheckKeyboardAndUpdateMovement();
+        AffectWithGravity();
         SimulateFriction();
+        MoveAsFarAsPossible(gameTime);
+        StopMovingIfBlocked();
+    }
+
+    private void AffectWithGravity()
+    {
+         Movement += Vector2.UnitY * .8f;
+    }
+
+    private void MoveAsFarAsPossible(GameTime gameTime)
+    {
+        Vector2 oldPosition = Position;
         UpdatePositionBasedOnMovement(gameTime);
+        Position = Board.CurrentBoard.WhereCanIGetTo(oldPosition, Position, Bounds);
     }
 
     private void CheckKeyboardAndUpdateMovement()
@@ -31,7 +46,7 @@ class Jumper : Sprite
 
         if (keyboardState.IsKeyDown(Keys.Left)) { Movement += new Vector2(-1, 0); }
         if (keyboardState.IsKeyDown(Keys.Right)) { Movement += new Vector2(1, 0); }
-        if (keyboardState.IsKeyDown(Keys.Up)) { Movement += new Vector2(0, -1); }
+        if (keyboardState.IsKeyDown(Keys.Up) && IsOnFirmGround()) { Movement = new Vector2(0,-1.0f) * 25; }
     }
 
     private void SimulateFriction()
@@ -42,5 +57,19 @@ class Jumper : Sprite
     private void UpdatePositionBasedOnMovement(GameTime gameTime)
     {
         Position += Movement * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 15;
+    }
+
+    public bool IsOnFirmGround()
+    {
+        Rectangle onePixelLower = Bounds;
+        onePixelLower.Offset(0, 1);
+        return !Board.CurrentBoard.HasRoomForRectangle(onePixelLower);
+    }
+
+    private void StopMovingIfBlocked()
+    {
+        Vector2 lastMovement = Position - oldPosition;
+        if (lastMovement.X == 0) { Movement *= Vector2.UnitY; }
+        if (lastMovement.Y == 0) { Movement *= Vector2.UnitX; }
     }
 }

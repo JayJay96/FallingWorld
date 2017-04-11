@@ -24,6 +24,8 @@ namespace FallingWorld
 
         private Board board;
 
+        private SpriteFont debugFont;
+
         enum GameState
         {
             MainMenu,
@@ -79,6 +81,8 @@ namespace FallingWorld
             _jumperTexture = Content.Load<Texture2D>("jumper");
             jumper = new Jumper(_jumperTexture, new Vector2(50, 50), spriteBatch);
             board = new Board(spriteBatch, _tileTexture, 15, 10);
+
+            debugFont = Content.Load<SpriteFont>("DebugFont");
         }
 
         protected override void UnloadContent()
@@ -134,9 +138,13 @@ namespace FallingWorld
                     btnPlayerL.Draw(spriteBatch);
                     break;
                 case GameState.Playing:
+                    string positionInText = string.Format("Position of Jumper: ({0:0.0}, {1:0.0})", jumper.Position.X, jumper.Position.Y);
+                    string movementInText = string.Format("Current movement: ({0:0.0}, {1:0.0})", jumper.Movement.X, jumper.Movement.Y);
                     GraphicsDevice.Clear(Color.WhiteSmoke);
                     base.Draw(gameTime);
                     board.Draw();
+                    spriteBatch.DrawString(debugFont, positionInText, new Vector2(10, 0), Color.Black);
+                    spriteBatch.DrawString(debugFont, movementInText, new Vector2(10, 20), Color.Black);
                     jumper.Draw();
                     
                     break;
