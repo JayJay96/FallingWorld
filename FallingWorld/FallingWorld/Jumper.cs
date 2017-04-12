@@ -12,7 +12,7 @@ class Jumper : Sprite
 {
     public Vector2 Movement { get; set; }
     private Vector2 oldPosition;
-    private int doubleJump = 0;
+    public int doubleJump;
 
     public Jumper(Texture2D texture, Vector2 position, SpriteBatch spritebatch)
         : base(texture, position, spritebatch)
@@ -23,7 +23,6 @@ class Jumper : Sprite
     public void Update(GameTime gameTime)
     {
         CheckKeyboardAndUpdateMovement();
-        doubleJump = 0;
         AffectWithGravity();
         SimulateFriction();
         MoveAsFarAsPossible(gameTime);
@@ -45,15 +44,16 @@ class Jumper : Sprite
     private void CheckKeyboardAndUpdateMovement()
     {
         KeyboardState keyboardState = Keyboard.GetState();
+        if (IsOnFirmGround()) { doubleJump = 0; }
 
         if (keyboardState.IsKeyDown(Keys.Left)) { Movement += new Vector2(-1, 0); }
         if (keyboardState.IsKeyDown(Keys.Right)) { Movement += new Vector2(1, 0); }
-        if (keyboardState.IsKeyDown(Keys.Up) && IsOnFirmGround())
+        if (keyboardState.IsKeyDown(Keys.Up) && (IsOnFirmGround() || doubleJump < 2 ))
         {
-            Movement += new Vector2(0, -1.0f) * 25;
+            Movement = new Vector2(0, -1.0f) * 25;
+            doubleJump++;
         }
-        doubleJump = 0;
-
+        
 
     }
 

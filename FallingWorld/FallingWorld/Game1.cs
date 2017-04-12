@@ -140,11 +140,13 @@ namespace FallingWorld
                 case GameState.Playing:
                     string positionInText = string.Format("Position of Jumper: ({0:0.0}, {1:0.0})", jumper.Position.X, jumper.Position.Y);
                     string movementInText = string.Format("Current movement: ({0:0.0}, {1:0.0})", jumper.Movement.X, jumper.Movement.Y);
+                    string doubleJumpValue = string.Format("Value of doubleJump flag " + jumper.doubleJump);
                     GraphicsDevice.Clear(Color.WhiteSmoke);
                     base.Draw(gameTime);
                     board.Draw();
                     spriteBatch.DrawString(debugFont, positionInText, new Vector2(10, 0), Color.Black);
                     spriteBatch.DrawString(debugFont, movementInText, new Vector2(10, 20), Color.Black);
+                    spriteBatch.DrawString(debugFont, doubleJumpValue, new Vector2(10, 40), Color.Black);
                     jumper.Draw();
                     
                     break;
