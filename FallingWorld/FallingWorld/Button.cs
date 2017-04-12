@@ -8,7 +8,7 @@ using System.Text;
 
 namespace FallingWorld
 {
-    class cButton
+    public class Button
     {
         Texture2D texture;
         Vector2 position;
@@ -18,18 +18,18 @@ namespace FallingWorld
 
         public Vector2 size;
 
-        public cButton(Texture2D texture, GraphicsDevice graphics, float sizeX, float sizeY)
+        public Button(Texture2D texture, GraphicsDevice graphics, float sizeX, float sizeY)
         {
             this.texture = texture;
             this.size = new Vector2(sizeX, sizeY);
         }
 
         bool down;
-        public bool isCLicked;
+        public bool isCLicked = false;
 
         public void Update(MouseState mouse)
         {
-            rectangle = new Rectangle((int)position.X, (int) position.Y, (int)size.X, (int)size.Y);
+            rectangle = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
 
             Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
 
@@ -43,7 +43,7 @@ namespace FallingWorld
 
                 if (mouse.LeftButton == ButtonState.Pressed) isCLicked = true;
             }
-            else if(color.A < 255)
+            else if (color.A < 255)
             {
                 color.A += 3;
                 isCLicked = false;

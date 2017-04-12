@@ -58,7 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
-    <Compile Include="cButton.cs" />
+    <Compile Include="Button.cs" />
+    <Compile Include="Fade.cs" />
     <Compile Include="Jumper.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
