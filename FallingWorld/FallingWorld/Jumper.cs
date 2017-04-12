@@ -14,23 +14,26 @@ class Jumper : Sprite
     private Vector2 oldPosition;
     public Texture2D TextureGauche { get; set; }
     public Texture2D TextureDroite { get; set; }
-    private int doubleJump = 0;
-
+    public int doubleJump;
+    private KeyboardState oldState, newState;
     public Jumper(Texture2D textureGauche, Texture2D textureDroite, Vector2 position, SpriteBatch spritebatch)
         : base(textureGauche, position, spritebatch)
     {
         this.TextureDroite = textureDroite;
         this.TextureGauche = textureGauche;
+        oldState = Keyboard.GetState();
     }
 
 
     public void Update(GameTime gameTime)
     {
+        newState = Keyboard.GetState();
         CheckKeyboardAndUpdateMovement();
         AffectWithGravity();
         SimulateFriction();
         MoveAsFarAsPossible(gameTime);
         StopMovingIfBlocked();
+        oldState = newState;
     }
 
     private void AffectWithGravity()
@@ -48,17 +51,14 @@ class Jumper : Sprite
     private void CheckKeyboardAndUpdateMovement()
     {
         KeyboardState keyboardState = Keyboard.GetState();
+        if (IsOnFirmGround()) { doubleJump = 0; }
 
         if (keyboardState.IsKeyDown(Keys.Left)) { Movement += new Vector2(-1, 0); Texture = TextureGauche; }
         if (keyboardState.IsKeyDown(Keys.Right)) { Movement += new Vector2(1, 0); Texture = TextureDroite; }
-        if (keyboardState.IsKeyDown(Keys.Up) && IsOnFirmGround())
+        if (keyboardState.IsKeyDown(Keys.Up) && ((IsOnFirmGround() || doubleJump < 2 ) && (newState.IsKeyDown(Keys.Up) && !oldState.IsKeyDown(Keys.Up))))
         {
-            Movement += new Vector2(0, -1.0f) * 25;
-        }
-        else if (keyboardState.IsKeyDown(Keys.Up) && doubleJump == 0)
-        {
-            Movement += new Vector2(0, -1.0f) * 25;
-            doubleJump = 1;
+            Movement = new Vector2(0, -1.0f) * 25;
+            doubleJump++;
         }
     }
 
