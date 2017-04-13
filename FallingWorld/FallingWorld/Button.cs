@@ -18,10 +18,11 @@ namespace FallingWorld
 
         public Vector2 size;
 
-        public Button(Texture2D texture, GraphicsDevice graphics, float sizeX, float sizeY)
+        public Button(Texture2D texture, GraphicsDevice graphics, float sizeX, float sizeY, Vector2 position)
         {
             this.texture = texture;
             this.size = new Vector2(sizeX, sizeY);
+            this.position = position;
         }
 
         bool down;

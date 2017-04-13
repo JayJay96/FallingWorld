@@ -13,21 +13,25 @@ namespace FallingWorld
         private int columns { get; set; }
         private int rows { get; set; }
         private Texture2D texture { get; set; }
+        private Texture2D leftPlateformTextuxe { get; set; }
+        private Texture2D rightPlateformTextuxe { get; set; }
         private SpriteBatch spriteBatch { get; set; }
 
         public static Board CurrentBoard { get; private set; }
 
         private Random _rnd = new Random();
 
-        public Board(SpriteBatch spritebatch, Texture2D tileTexture, int columns, int rows)
+        public Board(SpriteBatch spritebatch, Texture2D tileTexture, Texture2D leftPlateformTextuxe, Texture2D rightPlateformTextuxe, int columns, int rows)
         {
             this.columns = columns;
             this.rows = rows;
             texture = tileTexture;
+            this.leftPlateformTextuxe = leftPlateformTextuxe;
+            this.rightPlateformTextuxe = rightPlateformTextuxe;
             this.spriteBatch = spritebatch;
             grille = new Tile[columns, rows];
             InitializeAllTilesAndBlockSomeRandomly();
-            setFloorBlocked();
+            initGrid();
             Board.CurrentBoard = this;
 
         }
@@ -56,6 +60,50 @@ namespace FallingWorld
                     { grille[x, y].IsBlocked = true; }
                 }
             }
+        }
+
+        private void initGrid()
+        {
+            for(int x = 0; x < columns; ++x)
+                grille[x, rows - 1].IsBlocked = true;
+
+            for(int x = 1; x < 4; ++x)
+                grille[x, 16].IsBlocked = true;
+
+            for (int x = 11; x < 14; ++x)
+                grille[x, 16].IsBlocked = true;
+
+            for(int x = 5; x < 10; ++x)
+                grille[x, 12].IsBlocked = true;
+
+            grille[0, 9].Texture = leftPlateformTextuxe;
+            grille[0, 9].IsBlocked = true;
+            grille[1, 9].Texture = rightPlateformTextuxe;
+            grille[1, 9].IsBlocked = true;
+
+            grille[13, 9].Texture = leftPlateformTextuxe;
+            grille[13, 9].IsBlocked = true;
+            grille[14, 9].Texture = rightPlateformTextuxe;
+            grille[14, 9].IsBlocked = true;
+
+            grille[3, 6].Texture = leftPlateformTextuxe;
+            grille[3, 6].IsBlocked = true;
+            grille[11, 6].Texture = rightPlateformTextuxe;
+            grille[11, 6].IsBlocked = true;
+
+            for (int i = 4; i < 11; ++i)
+                grille[i, 6].IsBlocked = true;
+
+            grille[0, rows - 1].Texture = leftPlateformTextuxe;
+            grille[columns -1, rows - 1].Texture = rightPlateformTextuxe;
+
+            grille[1, 16].Texture = leftPlateformTextuxe;
+            grille[11, 16].Texture = leftPlateformTextuxe;
+            grille[5, 12].Texture = leftPlateformTextuxe;
+
+            grille[3, 16].Texture = rightPlateformTextuxe;
+            grille[13, 16].Texture = rightPlateformTextuxe;
+            grille[9, 12].Texture = rightPlateformTextuxe;
         }
 
         public void Draw()

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FallingWorld
 {
-    class Sprite
+    public class Sprite
     {
         public Vector2 Position { get; set; }
         public Texture2D Texture { set; get; }
