@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -7,9 +8,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("FallingWorld")]
 [assembly: AssemblyProduct("FallingWorld")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("UCBL")]
-[assembly: AssemblyCopyright("Copyright © UCBL 2017")]
+[assembly: AssemblyDescription("Gmae in order to learn game development and usage of C#/XNA")]
+[assembly: AssemblyCompany("SudGamming")]
+[assembly: AssemblyCopyright("Copyright © Marvel 2017 SudGamming 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,4 +32,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.5.255")]
+[assembly: NeutralResourcesLanguage("fr-FR")]
+

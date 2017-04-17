@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,38 +10,33 @@ using System.Text;
 
 namespace FallingWorld
 {
-    public class Object
+    public class Meteor
     {
-        Rectangle rectangle;
         Texture2D texture;
         Vector2 position;
+        Rectangle rectangle;
+        Vector2 movement;
         Vector2 size;
-        int scoreGive;
         FallingWorld game;
-        Stopwatch swObject;
-        SoundEffect objectSound;
+        SoundEffect explosionSong;
+        Color color = new Color(255, 255, 255, 255);
 
-        public Object(Texture2D texture, int scoreGive, Vector2 position, float sizeX, float sizeY, FallingWorld game, SoundEffect objectSound)
+        public Meteor(Texture2D texture, Vector2 position, float sizeX, float sizeY, FallingWorld game, Vector2 movement, SoundEffect explosionSong)
         {
             this.size = new Vector2(sizeX, sizeY);
             this.position = position;
-            this.scoreGive = scoreGive;
             this.texture = texture;
             this.game = game;
-            this.objectSound = objectSound;
-            swObject = Stopwatch.StartNew();
+            this.movement = movement;
+            this.explosionSong = explosionSong;
         }
 
-
-        public void Update(Jumper jumper, Stopwatch sw)
+        public void Update(Jumper jumper)
         {
-            if (!sw.IsRunning)
-                swObject.Stop();
-            else
-                swObject.Start();
-
-            if ((int)swObject.Elapsed.TotalMilliseconds / 10000 > 0)
-                game.objectsToRemove.Add(this);
+            if (position.Y > 580 || position.X < -10 || position.X > 970)
+            {
+                game.meteorsToRemove.Add(this);
+            }
             else
             {
                 rectangle = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
@@ -49,10 +45,16 @@ namespace FallingWorld
 
                 if (jumperRectangle.Intersects(rectangle))
                 {
-                    jumper.Score += this.scoreGive;
-                    objectSound.Play(0.5f, 0f, 0f);
-                    game.objectsToRemove.Add(this);
+                    if (!jumper.swHit.IsRunning)
+                    {
+                        jumper.NbLife--;
+                        game.meteorsToRemove.Add(this);
+                        if(jumper.NbLife != 0)
+                            explosionSong.Play(0.5f, 0f, 0f);
+                        jumper.swHit = Stopwatch.StartNew();
+                    }
                 }
+                position += movement;
             }
         }
 
