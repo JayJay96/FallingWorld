@@ -130,9 +130,6 @@
   <data name="BlackPanthereLittleDroite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\BlackPanthereLittleDroite.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="BlackPanthere_256" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\BlackPanthere 256.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="CaptainAmericaHead" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\CaptainAmericaHead.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -142,9 +139,6 @@
   <data name="CaptainAmericaLittleDroite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\CaptainAmericaLittleDroite.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="CaptainAmerica_256" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\CaptainAmerica 256.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="DeadpoolHead" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\DeadpoolHead.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -153,9 +147,6 @@
   </data>
   <data name="DeadpoolLittleDroite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\DeadpoolLittleDroite.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Deadpool_256" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\Deadpool 256.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="DebugFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\DebugFont.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -177,12 +168,6 @@
   </data>
   <data name="IronManLittleDroite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\IronManLittleDroite.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="IronMan_256" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\IronMan 256.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Jumper" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\Jumper.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="MainMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\MainMenu.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -207,12 +192,6 @@
   </data>
   <data name="Plateform" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\Plateform.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="PlateformLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\PlateformLeft.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="PlateformRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\PlateformRight.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="PlayBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\PlayBackground.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -244,15 +223,6 @@
   <data name="SpidermanLittleDroite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\SpidermanLittleDroite.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Spiderman_256" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\Spiderman 256.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Tile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\Tile.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Tile2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\Tile2.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="WarMachineHead" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\WarMachineHead.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -261,8 +231,5 @@
   </data>
   <data name="WarMachineLittleDroite" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>bin\x86\Debug\Content\WarMachineLittleDroite.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="WarMachine_256" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\WarMachine 256.xnb;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

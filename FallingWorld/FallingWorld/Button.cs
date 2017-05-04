@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 
 namespace FallingWorld
 {
@@ -14,19 +14,26 @@ namespace FallingWorld
         Vector2 position;
         Rectangle rectangle;
 
+        bool increase;
+        public bool isCLicked = false;
+        public Boolean Intersect { get; set; }
+
         Color color = new Color(255, 255, 255, 255);
+        float defaultX, defaultY, defaultPosX;
 
         public Vector2 size;
 
-        public Button(Texture2D texture, GraphicsDevice graphics, float sizeX, float sizeY, Vector2 position)
+        public Button(Texture2D texture, GraphicsDevice graphics, float sizeX, float sizeY, Vector2 position, bool doIncrease)
         {
+            this.Intersect = false;
             this.texture = texture;
             this.size = new Vector2(sizeX, sizeY);
+            this.defaultX = sizeX;
+            this.defaultY = sizeY;
+            defaultPosX = position.X;
             this.position = position;
+            increase = doIncrease;
         }
-
-        bool down;
-        public bool isCLicked = false;
 
         public void Update(MouseState mouse)
         {
@@ -34,20 +41,27 @@ namespace FallingWorld
 
             Rectangle mouseRectangle = new Rectangle(mouse.X, mouse.Y, 1, 1);
 
-            if (mouseRectangle.Intersects(rectangle))
-            {
-                if (color.A == 255) down = false;
-                else if (color.A == 0) down = true;
-
-                if (down) color.A += 3;
-                else color.A -= 3;
-
-                if (mouse.LeftButton == ButtonState.Pressed) isCLicked = true;
+            if (mouseRectangle.Intersects(rectangle)){
+                Intersect = true;
+                if(mouse.LeftButton == ButtonState.Pressed) isCLicked = true;
+                if (increase && position.X == defaultPosX)
+                {
+                    size = new Vector2(defaultX + defaultX * 0.15f, defaultY + defaultY * 0.15f);
+                    position.X -= defaultX * 0.15f;
+                    position.Y -= defaultY * 0.15f;
+                }
             }
-            else if (color.A < 255)
+
+            else 
             {
-                color.A += 3;
-                isCLicked = false;
+                Intersect = false;
+
+                if (increase && position.X < defaultPosX)
+                {
+                    size = new Vector2(defaultX, defaultY);
+                    position.X += defaultX * 0.15f;
+                    position.Y += defaultY * 0.15f;
+                }
             }
         }
 

@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("FallingWorld")]
 [assembly: AssemblyProduct("FallingWorld")]
-[assembly: AssemblyDescription("Gmae in order to learn game development and usage of C#/XNA")]
+[assembly: AssemblyDescription("Game in order to learn game development and usage of C#/XNA")]
 [assembly: AssemblyCompany("SudGamming")]
 [assembly: AssemblyCopyright("Copyright © Marvel 2017 SudGamming 2017")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("FallingWorld")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

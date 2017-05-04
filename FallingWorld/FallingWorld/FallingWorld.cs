@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Threading;
 using System.Diagnostics;
 using System.Xml;
 using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 
 namespace FallingWorld
@@ -20,14 +17,13 @@ namespace FallingWorld
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        /*GifAnimation.GifAnimation anim;
-        anim = Content.Load<GifAnimation.GifAnimation>("anim1");
-        anim.Update(gameTime.ElapsedGameTime.Ticks);*/
 
         private Texture2D mainMenuTexture, selectPlayerTexture, selectWorldTexture, playingTexture;
         private Jumper jumper;
         private Vector2 initalPosition;
-
+        private Texture2D cursorTexStandard, cursorTexHand;
+        private Rectangle screenRectangle;
+        private Point point;
         private Board board;
 
         private SpriteFont debugFont, pixelFont;
@@ -54,10 +50,9 @@ namespace FallingWorld
         String playerSelected;
 
         //World button
-        Button btnWorld1, btnWorld2;
+        Button btnWorld1, btnWorld2, btnWorldRandom;
 
         //Pause and game over items
-        Rectangle pausedRectangle;
         Texture2D pauseTexture;
         Texture2D gameOverTexture;
         SoundEffect gameOverSound;
@@ -65,8 +60,9 @@ namespace FallingWorld
 
         //Game items
         String time, score, life, best;
+        Vector2 timePos, scorePos, lifePos, bestPos, bestScorePos, scoreNumPos, timNumPos;
         List<int> bestScores;
-        int bestScore, loadedScore;
+        int bestScore;
         int levelSelected;
         Rectangle newRecordRectangle;
         Texture2D newRecordTexture;
@@ -94,10 +90,9 @@ namespace FallingWorld
         private int nbMeteor;
         private int nbMeteorSpawned;
         Stopwatch swMetor;
+        Stopwatch swMenu;
         Texture2D meteorTexture;
         SoundEffect meteorExplosionSong;
-
-        List<int> availableRandomValue;
         MouseState mouse;
 
         public FallingWorld()
@@ -114,6 +109,8 @@ namespace FallingWorld
 
         protected override void LoadContent()
         {
+            this.IsMouseVisible = false;
+            screenRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             mainMenuTexture = Content.Load<Texture2D>("MainMenu");
@@ -125,34 +122,34 @@ namespace FallingWorld
             graphics.PreferredBackBufferHeight = screenHeight;
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
-            IsMouseVisible = true;
-
+            cursorTexStandard = Content.Load<Texture2D>("CursorStandard");
+            cursorTexHand = Content.Load<Texture2D>("CursorHand");
             //Init game button
-            btnPlay = new Button(Content.Load<Texture2D>("PlayButtonTransparent"), graphics.GraphicsDevice, 200, 50, new Vector2(100, 500));
-            btnExit = new Button(Content.Load<Texture2D>("QuitButton"), graphics.GraphicsDevice, 200, 50, new Vector2(660, 500));
-            btnResumePaused = new Button(Content.Load<Texture2D>("ResumeButton"), graphics.GraphicsDevice, 200, 50, new Vector2(375, 240));
-            btnReplay = new Button(Content.Load<Texture2D>("ReplayButton"), graphics.GraphicsDevice, 200, 50, new Vector2(375, 240));
-            btnExitPlay = new Button(Content.Load<Texture2D>("MenuButton"), graphics.GraphicsDevice, 200, 50, new Vector2(375, 300));
+            btnPlay = new Button(Content.Load<Texture2D>("PlayButtonTransparent"), graphics.GraphicsDevice, 200, 50, new Vector2(100, 500), true);
+            btnExit = new Button(Content.Load<Texture2D>("QuitButton"), graphics.GraphicsDevice, 200, 50, new Vector2(660, 500), true);
+            btnResumePaused = new Button(Content.Load<Texture2D>("ResumeButton"), graphics.GraphicsDevice, 200, 50, new Vector2(375, 240), false);
+            btnReplay = new Button(Content.Load<Texture2D>("ReplayButton"), graphics.GraphicsDevice, 200, 50, new Vector2(375, 240), false);
+            btnExitPlay = new Button(Content.Load<Texture2D>("MenuButton"), graphics.GraphicsDevice, 200, 50, new Vector2(375, 300), false);
 
             //Init player button
-            btnPlayerD = new Button(Content.Load<Texture2D>("Deadpool 256"), graphics.GraphicsDevice, 256, 256, new Vector2(100, 330));
-            btnPlayerS = new Button(Content.Load<Texture2D>("Spiderman 256"), graphics.GraphicsDevice, 256, 256, new Vector2(350, 330));
-            btnPlayerP = new Button(Content.Load<Texture2D>("BlackPanthere 256"), graphics.GraphicsDevice, 256, 256, new Vector2(600, 330));
-            btnPlayerW = new Button(Content.Load<Texture2D>("WarMachine 256"), graphics.GraphicsDevice, 256, 256, new Vector2(100, 80));
-            btnPlayerI = new Button(Content.Load<Texture2D>("IronMan 256"), graphics.GraphicsDevice, 256, 256, new Vector2(350, 80));
-            btnPlayerC = new Button(Content.Load<Texture2D>("CaptainAmerica 256"), graphics.GraphicsDevice, 256, 256, new Vector2(600, 80));
+            btnPlayerD = new Button(Content.Load<Texture2D>("DeadpoolMenu"), graphics.GraphicsDevice, 190, 210, new Vector2(90, 350), true);
+            btnPlayerS = new Button(Content.Load<Texture2D>("SpidermanMenu"), graphics.GraphicsDevice, 190, 210, new Vector2(370, 350), true);
+            btnPlayerP = new Button(Content.Load<Texture2D>("BlackPanthereMenu"), graphics.GraphicsDevice, 190, 210, new Vector2(660, 350), true);
+            btnPlayerW = new Button(Content.Load<Texture2D>("WarMachineMenu"), graphics.GraphicsDevice, 190, 210, new Vector2(90, 100), true);
+            btnPlayerI = new Button(Content.Load<Texture2D>("IronManMenu"), graphics.GraphicsDevice, 190, 210, new Vector2(370, 100), true);
+            btnPlayerC = new Button(Content.Load<Texture2D>("CaptainAmericaMenu"), graphics.GraphicsDevice, 190, 210, new Vector2(660, 100), true);
 
             //Init world button
-            btnWorld1 = new Button(Content.Load<Texture2D>("World1"), graphics.GraphicsDevice, 256, 170, new Vector2(30, 120));
-            btnWorld2 = new Button(Content.Load<Texture2D>("World2"), graphics.GraphicsDevice, 256, 170, new Vector2(300, 120));
+            btnWorld1 = new Button(Content.Load<Texture2D>("World1"), graphics.GraphicsDevice, 256, 170, new Vector2(30, 120), false);
+            btnWorld2 = new Button(Content.Load<Texture2D>("World2"), graphics.GraphicsDevice, 256, 170, new Vector2(300, 120), false);
+            btnWorldRandom = new Button(Content.Load<Texture2D>("WorldRandom"), graphics.GraphicsDevice, 256, 170, new Vector2(570, 120), false);
 
             //Init pause/game over items
-            pausedRectangle = new Rectangle(0, 0, screenWidth, screenHeight);
             pauseTexture = Content.Load<Texture2D>("Pause");
             gameOverTexture = Content.Load<Texture2D>("GameOver");
             gameOverSound = Content.Load<SoundEffect>("GameOverSong");
             
-            board = new Board(spriteBatch, Content.Load<Texture2D>("Plateform"), 15, 20);
+            board = new Board(spriteBatch, Content.Load<Texture2D>("Plateform"), 17, 20);
 
             debugFont = Content.Load<SpriteFont>("DebugFont");
             pixelFont = Content.Load<SpriteFont>("Pixel");
@@ -176,19 +173,19 @@ namespace FallingWorld
             newRecordRectangle = new Rectangle(268, 420, 423,83);
             newRecordTexture = Content.Load<Texture2D>("NewRecord");
 
-            availableRandomValue = new List<int>();
-            for(int i = -5; i < 6; ++i)
-            {
-                if (i != 0)
-                    availableRandomValue.Add(i);
-            }
-
             random = new Random();
             oldState = Keyboard.GetState();
             time = "TIME";
+            timePos = new Vector2(30, 0);
+            timNumPos = new Vector2(10, 20);
             score = "SCORE";
+            scorePos = new Vector2(865, 0);
+            scoreNumPos = new Vector2(850, 20);
             life = "LIFE";
+            lifePos = new Vector2(460, 0);
             best = "BEST";
+            bestPos = new Vector2(870, 40);
+            bestScorePos = new Vector2(850, 60);
             nbObjectSpawn = 0;
             playerSelected = "";
             initalPosition = new Vector2(460, 525);
@@ -217,15 +214,17 @@ namespace FallingWorld
                     if (btnPlay.isCLicked)
                     {
                         //Usefull to block click chaining
-                        Thread.Sleep(1000);
+                        if (swMenu == null)
+                            swMenu = Stopwatch.StartNew();
 
-                        resetClickButton();
-
-                        jumper = new Jumper(null, null, null, 
-                            Content.Load<Texture2D>("PlayerTransparent"), initalPosition, spriteBatch, null, null, null);
-                        objects.Clear();
-                        meteors.Clear();
-                        CurrentGameState = GameState.SelectPlayer;
+                        if (swMenu != null && swMenu.ElapsedMilliseconds > 1000)
+                        {
+                            swMenu.Stop();
+                            resetClickButton();
+                            objects.Clear();
+                            meteors.Clear();
+                            CurrentGameState = GameState.SelectPlayer;
+                        }
                     }
 
                     if (btnExit.isCLicked)
@@ -238,27 +237,38 @@ namespace FallingWorld
                 case GameState.SelectPlayer:
 
                     //Test for each button to know which player is selected
-                    if (btnPlayerD.isCLicked)
-                        playerSelected = "Deadpool";
+                    if (playerSelected.Equals(""))
+                    {
+                        if (btnPlayerD.isCLicked)
+                            playerSelected = "Deadpool";
 
-                    if (btnPlayerS.isCLicked)
-                        playerSelected = "Spiderman";
+                        if (btnPlayerS.isCLicked)
+                            playerSelected = "Spiderman";
 
-                    if (btnPlayerP.isCLicked)
-                        playerSelected = "BlackPanthere";
+                        if (btnPlayerP.isCLicked)
+                            playerSelected = "BlackPanthere";
 
-                    if (btnPlayerW.isCLicked)
-                        playerSelected = "WarMachine";
+                        if (btnPlayerW.isCLicked)
+                            playerSelected = "WarMachine";
 
-                    if (btnPlayerI.isCLicked)
-                        playerSelected = "IronMan";
+                        if (btnPlayerI.isCLicked)
+                            playerSelected = "IronMan";
 
-                    if (btnPlayerC.isCLicked)
-                        playerSelected = "CaptainAmerica";
+                        if (btnPlayerC.isCLicked)
+                            playerSelected = "CaptainAmerica";
+
+                        if (!playerSelected.Equals(""))
+                        {
+                            swMenu = Stopwatch.StartNew();
+                        }
+                    }
 
                     //If a player is selected, init the jumper object and go to world selection
-                    if (!playerSelected.Equals(""))
+                    if (!playerSelected.Equals("") && swMenu != null && swMenu.ElapsedMilliseconds > 1000)
+                    {
+                        swMenu.Stop();
                         initJumper(playerSelected);
+                    }
                     
 
                     btnPlayerW.Update(mouse);
@@ -278,6 +288,9 @@ namespace FallingWorld
                     if (btnWorld2.isCLicked)
                         levelSelected = 1;
 
+                    if (btnWorldRandom.isCLicked)
+                        levelSelected = random.Next(0, 2);
+
                     if (levelSelected != -1)
                     {
                         board.grille = board.allGrille[levelSelected];
@@ -286,6 +299,7 @@ namespace FallingWorld
 
                     btnWorld1.Update(mouse);
                     btnWorld2.Update(mouse);
+                    btnWorldRandom.Update(mouse);
                     break;
                 case GameState.Playing:
                     
@@ -309,16 +323,16 @@ namespace FallingWorld
                         randomPosX = random.Next(100, 860);
 
                         //Meteor spawned at the left of the screen, movement to right with a random speed
-                        if (randomPosX < 420)
+                        if (randomPosX < 380)
                             randomPosMvX = random.Next(1, 6);
                         //Meteor spawned at the right of the screen, movement to left with a random speed
-                        else if (randomPosX > 540)
+                        else if (randomPosX > 580)
                             randomPosMvX = random.Next(-5, 0);
                         //Meteor spawned near the center of the screen, random movement and speed
                         else
-                            randomPosMvX = availableRandomValue.ElementAt(random.Next(0, 9));
+                            randomPosMvX = 0;
 
-                        randomPosMvY = random.Next(1, 3);
+                        randomPosMvY = random.Next(2, 5);
                         meteors.Add(new Meteor(meteorTexture, new Vector2(randomPosX, -1), 50, 50, this, 
                             new Vector2(randomPosMvX, randomPosMvY), meteorExplosionSong));
                         nbMeteorSpawned++;
@@ -346,7 +360,7 @@ namespace FallingWorld
                             meteors.Remove(m);
                         meteorsToRemove.Clear();
 
-                    if (jumper.NbLife == 0)
+                    if (jumper.NbLife <= 0)
                     {
                         btnReplay.isCLicked = false;
                         CurrentGameState = GameState.GameOver;
@@ -429,47 +443,89 @@ namespace FallingWorld
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-
+            Rectangle mouseRectangle = new Rectangle(mouse.X - 5, mouse.Y - 5, 50, 40);
+            point = new Point(mouse.X, mouse.Y);
+            
             switch (CurrentGameState)
             {
                 case GameState.MainMenu:
-                    spriteBatch.Draw(mainMenuTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    spriteBatch.Draw(mainMenuTexture, screenRectangle, Color.White);
                     btnPlay.Draw(spriteBatch);
                     btnExit.Draw(spriteBatch);
+
+                    if (GraphicsDevice.Viewport.Bounds.Contains(point))
+                    {
+                        if (btnExit.Intersect || btnPlay.Intersect)
+                            spriteBatch.Draw(cursorTexHand, mouseRectangle, Color.White);
+                        else
+                            spriteBatch.Draw(cursorTexStandard, mouseRectangle, Color.White);
+                    }
                     break;
                 case GameState.SelectPlayer:
-                    spriteBatch.Draw(selectPlayerTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    spriteBatch.Draw(selectPlayerTexture, screenRectangle, Color.White);
                     btnPlayerD.Draw(spriteBatch);
                     btnPlayerS.Draw(spriteBatch);
                     btnPlayerP.Draw(spriteBatch);
                     btnPlayerW.Draw(spriteBatch);
                     btnPlayerI.Draw(spriteBatch);
                     btnPlayerC.Draw(spriteBatch);
+
+                    if (GraphicsDevice.Viewport.Bounds.Contains(point))
+                    {
+                        if (btnPlayerD.Intersect || btnPlayerS.Intersect || btnPlayerP.Intersect
+                         || btnPlayerW.Intersect || btnPlayerI.Intersect || btnPlayerC.Intersect)
+                            spriteBatch.Draw(cursorTexHand, mouseRectangle, Color.White);
+                        else
+                            spriteBatch.Draw(cursorTexStandard, mouseRectangle, Color.White);
+                    }
                     break;
                 case GameState.SelectWorld:
-                    spriteBatch.Draw(selectWorldTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    spriteBatch.Draw(selectWorldTexture, screenRectangle, Color.White);
                     btnWorld1.Draw(spriteBatch);
                     btnWorld2.Draw(spriteBatch);
+                    btnWorldRandom.Draw(spriteBatch);
+
+                    if (GraphicsDevice.Viewport.Bounds.Contains(point))
+                    {
+                        if (btnWorld1.Intersect || btnWorld2.Intersect || btnWorldRandom.Intersect)
+                            spriteBatch.Draw(cursorTexHand, mouseRectangle, Color.White);
+                        else
+                            spriteBatch.Draw(cursorTexStandard, mouseRectangle, Color.White);
+                    }
                     break;
                 case GameState.Playing:
                     drawGame(spriteBatch, gameTime);
                     break;
                 case GameState.Pause:
                     drawGame(spriteBatch, gameTime);
-                    spriteBatch.Draw(pauseTexture, pausedRectangle, Color.White);
+                    spriteBatch.Draw(pauseTexture, screenRectangle, Color.White);
                     btnExitPlay.Draw(spriteBatch);
                     btnResumePaused.Draw(spriteBatch);
+
+                    if (GraphicsDevice.Viewport.Bounds.Contains(point))
+                    {
+                        if (btnExitPlay.Intersect || btnResumePaused.Intersect)
+                            spriteBatch.Draw(cursorTexHand, mouseRectangle, Color.White);
+                        else
+                            spriteBatch.Draw(cursorTexStandard, mouseRectangle, Color.White);
+                    }
                     break;
                 case GameState.GameOver:
                     drawGame(spriteBatch, gameTime);
-                    spriteBatch.Draw(gameOverTexture, pausedRectangle, Color.White);
+                    spriteBatch.Draw(gameOverTexture, screenRectangle, Color.White);
                     btnExitPlay.Draw(spriteBatch);
                     btnReplay.Draw(spriteBatch);
                     if (isNewRecord)
                         spriteBatch.Draw(newRecordTexture, newRecordRectangle, Color.White);
+                    if (GraphicsDevice.Viewport.Bounds.Contains(point))
+                    {
+                        if (btnExitPlay.Intersect || btnReplay.Intersect)
+                            spriteBatch.Draw(cursorTexHand, mouseRectangle, Color.White);
+                        else
+                            spriteBatch.Draw(cursorTexStandard, mouseRectangle, Color.White);
+                    }
                     break;
             }
-
             base.Draw(gameTime);
             spriteBatch.End();
         }
@@ -478,7 +534,7 @@ namespace FallingWorld
         private void drawGame(SpriteBatch spriteBatch, GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
-            spriteBatch.Draw(playingTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+            spriteBatch.Draw(playingTexture, screenRectangle, Color.White);
             base.Draw(gameTime);
             board.Draw();
 
@@ -493,24 +549,21 @@ namespace FallingWorld
             }
 
             //Draw all game string (score, life, time)
-            spriteBatch.DrawString(pixelFont, time, new Vector2(30, 0), Color.White);
-            spriteBatch.DrawString(pixelFont, score, new Vector2(865, 0), Color.White);
-            spriteBatch.DrawString(pixelFont, string.Format("{0:00}:{1:00}:{2:00}", sw.Elapsed.Hours, sw.Elapsed.Minutes, sw.Elapsed.Seconds), new Vector2(10, 20), Color.White);
-            spriteBatch.DrawString(pixelFont, string.Format("{0:0000000}", jumper.Score), new Vector2(850, 20), Color.White);
-            spriteBatch.DrawString(pixelFont, best, new Vector2(870, 40), Color.White);
-            spriteBatch.DrawString(pixelFont, string.Format("{0:0000000}", bestScore < jumper.Score?jumper.Score:bestScore), new Vector2(850, 60), Color.White);
-            spriteBatch.DrawString(pixelFont, life, new Vector2(460, 0), Color.White);
+            spriteBatch.DrawString(pixelFont, time, timePos, Color.White);
+            spriteBatch.DrawString(pixelFont, score, scorePos, Color.White);
+            spriteBatch.DrawString(pixelFont, string.Format("{0:00}:{1:00}:{2:00}", sw.Elapsed.Hours, sw.Elapsed.Minutes, sw.Elapsed.Seconds), timNumPos, Color.White);
+            spriteBatch.DrawString(pixelFont, string.Format("{0:0000000}", jumper.Score), scoreNumPos, Color.White);
+            spriteBatch.DrawString(pixelFont, best, bestPos, Color.White);
+            spriteBatch.DrawString(pixelFont, string.Format("{0:0000000}", bestScore < jumper.Score?jumper.Score:bestScore), bestScorePos, Color.White);
+            spriteBatch.DrawString(pixelFont, life, lifePos, Color.White);
             int position = 394;
             for (int i = 0; i < jumper.NbLife; ++i)
             {
                 spriteBatch.Draw(jumper.TextureTete, new Vector2(position, 25), Color.White);
                 position += 60;
             }
-            //spriteBatch.DrawString(debugFont, string.Format("Current movement: ({0:0.0}, {1:0.0})", jumper.Movement.X, jumper.Movement.Y), new Vector2(10, 40), Color.Black);
-            //spriteBatch.DrawString(debugFont, string.Format("Value of doubleJump flag " + jumper.DoubleJump), new Vector2(10, 60), Color.Black);
-            //spriteBatch.DrawString(debugFont, string.Format("Position of Jumper: ({0:0.0}, {1:0.0})", jumper.Position.X, jumper.Position.Y), new Vector2(10, 80), Color.Black);
 
-            if (jumper.NbLife != 0)
+            if (jumper.NbLife > 0)
                 jumper.Draw();
         }
 
@@ -530,21 +583,22 @@ namespace FallingWorld
             btnExit.isCLicked = false;
             btnWorld1.isCLicked = false;
             btnWorld2.isCLicked = false;
+            btnWorldRandom.isCLicked = false;
         }
 
         //Load all jumper texture
         private void initJumper(String jumperName)
         {
-            jumper.TextureTete = Content.Load<Texture2D>(jumperName + "Head");
-            jumper.Texture = Content.Load<Texture2D>(jumperName + "Little");
-            jumper.TextureGauche = Content.Load<Texture2D>(jumperName + "Little");
-            jumper.TextureDroite = Content.Load<Texture2D>(jumperName + "LittleDroite");
-            jumper.TextureObject100 = Content.Load<Texture2D>("DeadpoolItem100");
-            jumper.TextureObject500 = Content.Load<Texture2D>("DeadpoolItem500");
-            jumper.TextureObject1000 = Content.Load<Texture2D>("DeadpoolItem1000");
+            jumper = new Jumper(Content.Load<Texture2D>(jumperName + "Little"),
+                                Content.Load<Texture2D>(jumperName + "LittleDroite"),
+                                Content.Load<Texture2D>(jumperName + "Head"),
+                                Content.Load<Texture2D>("PlayerTransparent"), initalPosition, spriteBatch, 
+                                Content.Load<Texture2D>("DeadpoolItem100"),
+                                Content.Load<Texture2D>("DeadpoolItem500"),
+                                Content.Load<Texture2D>("DeadpoolItem1000")
+                                );
             resetClickButton();
 
-            Thread.Sleep(1000);
             CurrentGameState = GameState.SelectWorld;
         }
 

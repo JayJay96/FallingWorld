@@ -16,6 +16,7 @@ public class Jumper : Sprite
     public Texture2D TextureObject100 { get; set; }
     public Texture2D TextureObject500 { get; set; }
     public Texture2D TextureObject1000 { get; set; }
+    private Texture2D oldTexture;
     public int Score { get; set; }
     public int DoubleJump { get; set; }
     private KeyboardState oldState, newState;
@@ -34,6 +35,7 @@ public class Jumper : Sprite
         this.TextureDroite = textureDroite;
         this.TextureGauche = textureGauche;
         this.TextureTransp = textureTransp;
+        oldTexture = TextureGauche;
         oldState = Keyboard.GetState();
         NbLife = 3;
         Score = 0;
@@ -81,8 +83,10 @@ public class Jumper : Sprite
         keyboardState = Keyboard.GetState();
         if (IsOnFirmGround()) { DoubleJump = 0; }
 
-        if (keyboardState.IsKeyDown(Keys.Left)) {
+        if (keyboardState.IsKeyDown(Keys.Left))
+        {
             Movement += new Vector2(-1, 0);
+            oldTexture = TextureGauche;
             if (!swHit.IsRunning || (swHit.Elapsed.TotalMilliseconds > 250 && swHit.Elapsed.TotalMilliseconds < 500)
                 || (swHit.Elapsed.TotalMilliseconds > 750 && swHit.Elapsed.TotalMilliseconds < 1000)
                 || (swHit.Elapsed.TotalMilliseconds > 1250 && swHit.Elapsed.TotalMilliseconds < 1500)
@@ -92,8 +96,10 @@ public class Jumper : Sprite
                 Texture = TextureTransp;
 
         }
-        if (keyboardState.IsKeyDown(Keys.Right)) {
+        if (keyboardState.IsKeyDown(Keys.Right))
+        {
             Movement += new Vector2(1, 0);
+            oldTexture = TextureDroite;
             if (!swHit.IsRunning || (swHit.Elapsed.TotalMilliseconds > 250 && swHit.Elapsed.TotalMilliseconds < 500)
                 || (swHit.Elapsed.TotalMilliseconds > 750 && swHit.Elapsed.TotalMilliseconds < 1000)
                 || (swHit.Elapsed.TotalMilliseconds > 1250 && swHit.Elapsed.TotalMilliseconds < 1500)
@@ -102,10 +108,22 @@ public class Jumper : Sprite
             else
                 Texture = TextureTransp;
         }
-        if (keyboardState.IsKeyDown(Keys.Up) && ((IsOnFirmGround() || DoubleJump < 2 ) && (newState.IsKeyDown(Keys.Up) && !oldState.IsKeyDown(Keys.Up))))
+
+        if (keyboardState.IsKeyDown(Keys.Up) && ((IsOnFirmGround() || DoubleJump < 2) && (newState.IsKeyDown(Keys.Up) && !oldState.IsKeyDown(Keys.Up))))
         {
             Movement = new Vector2(0, -1.0f) * 25;
             DoubleJump++;
+        }
+
+        if (swHit.IsRunning && !keyboardState.IsKeyDown(Keys.Left) && !keyboardState.IsKeyDown(Keys.Right))
+        {
+            if ((swHit.Elapsed.TotalMilliseconds > 250 && swHit.Elapsed.TotalMilliseconds < 500)
+                || (swHit.Elapsed.TotalMilliseconds > 750 && swHit.Elapsed.TotalMilliseconds < 1000)
+                || (swHit.Elapsed.TotalMilliseconds > 1250 && swHit.Elapsed.TotalMilliseconds < 1500)
+                || (swHit.Elapsed.TotalMilliseconds > 1750 && swHit.Elapsed.TotalMilliseconds < 3000))
+                Texture = oldTexture;
+            else
+                Texture = TextureTransp;
         }
     }
 

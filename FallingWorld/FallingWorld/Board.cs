@@ -43,7 +43,7 @@ namespace FallingWorld
                 for (int y = 0; y < rows; y++)
                { 
                     Vector2 tilePosition =
-                        new Vector2(x * texture.Width, y * texture.Height);
+                        new Vector2((x-1) * texture.Width, (y-1) * texture.Height);
                     grille[x, y] =
                         new Tile(texture, tilePosition, spriteBatch,false);
                 }
@@ -57,7 +57,7 @@ namespace FallingWorld
                 for (int y = 0; y < rows; y++)
                 {
                     Vector2 tilePosition =
-                        new Vector2(x * texture.Width, y * texture.Height);
+                        new Vector2((x-1) * texture.Width, y * texture.Height);
                     grille[x, y] =
                         new Tile(texture, tilePosition, spriteBatch, false);
                 }
@@ -68,6 +68,12 @@ namespace FallingWorld
         {
             for (int x = 0; x < columns; ++x)
                 grille[x, rows - 1].IsBlocked = true;
+
+            for(int i = 0; i < rows; ++i)
+            {
+                grille[16, i].IsBlocked = true;
+                grille[0, i].IsBlocked = true;
+            }
         }
 
         private void initMap1()
@@ -76,25 +82,25 @@ namespace FallingWorld
             InitializeAllTilesAndBlockSomeRandomly(grille);
             setFloorBlocked(grille);
 
-            for(int x = 1; x < 4; ++x)
+            for(int x = 2; x < 5; ++x)
                 grille[x, 16].IsBlocked = true;
 
-            for (int x = 11; x < 14; ++x)
+            for (int x = 12; x < 15; ++x)
                 grille[x, 16].IsBlocked = true;
 
-            for(int x = 5; x < 10; ++x)
+            for(int x = 6; x < 11; ++x)
                 grille[x, 12].IsBlocked = true;
 
-            grille[0, 9].IsBlocked = true;
             grille[1, 9].IsBlocked = true;
+            grille[2, 9].IsBlocked = true;
 
-            grille[13, 9].IsBlocked = true;
             grille[14, 9].IsBlocked = true;
+            grille[15, 9].IsBlocked = true;
 
-            grille[3, 6].IsBlocked = true;
-            grille[11, 6].IsBlocked = true;
+            grille[4, 6].IsBlocked = true;
+            grille[12, 6].IsBlocked = true;
 
-            for (int i = 4; i < 11; ++i)
+            for (int i = 5; i < 12; ++i)
                 grille[i, 6].IsBlocked = true;
 
             this.grille = grille;
@@ -115,35 +121,35 @@ namespace FallingWorld
             InitializeAllTilesAndBlockSomeRandomly(grille);
             setFloorBlocked(grille);
 
-            for (int x = 6; x < 9; ++x)
+            for (int x = 7; x < 10; ++x)
                 grille[x, 15].IsBlocked = true;
 
             for(int i = 15; i > 11; --i)
             {
-                grille[0, i].IsBlocked = true;
-                grille[2, i].IsBlocked = true;
-                grille[14, i].IsBlocked = true;
-                grille[12, i].IsBlocked = true;
+                grille[1, i].IsBlocked = true;
+                grille[3, i].IsBlocked = true;
+                grille[15, i].IsBlocked = true;
+                grille[13, i].IsBlocked = true;
             }
 
-            grille[1, 12].IsBlocked = true;
-            grille[13, 12].IsBlocked = true;
+            grille[2, 12].IsBlocked = true;
+            grille[14, 12].IsBlocked = true;
 
-            for (int i = 4; i < 11; ++i)
+            for (int i = 5; i < 12; ++i)
             {
                 grille[i, 9].IsBlocked = true;
             }
 
-            grille[0, 6].IsBlocked = true;
             grille[1, 6].IsBlocked = true;
             grille[2, 6].IsBlocked = true;
+            grille[3, 6].IsBlocked = true;
+            grille[15, 6].IsBlocked = true;
             grille[14, 6].IsBlocked = true;
             grille[13, 6].IsBlocked = true;
-            grille[12, 6].IsBlocked = true;
 
-            grille[6, 5].IsBlocked = true;
             grille[7, 5].IsBlocked = true;
             grille[8, 5].IsBlocked = true;
+            grille[9, 5].IsBlocked = true;
 
             this.grille = grille;
             allGrille.Add(grille);

@@ -73,16 +73,6 @@ namespace FallingWorld {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] BlackPanthere_256 {
-            get {
-                object obj = ResourceManager.GetObject("BlackPanthere_256", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
         internal static byte[] BlackPanthereHead {
             get {
                 object obj = ResourceManager.GetObject("BlackPanthereHead", resourceCulture);
@@ -113,16 +103,6 @@ namespace FallingWorld {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] CaptainAmerica_256 {
-            get {
-                object obj = ResourceManager.GetObject("CaptainAmerica_256", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
         internal static byte[] CaptainAmericaHead {
             get {
                 object obj = ResourceManager.GetObject("CaptainAmericaHead", resourceCulture);
@@ -146,16 +126,6 @@ namespace FallingWorld {
         internal static byte[] CaptainAmericaLittleDroite {
             get {
                 object obj = ResourceManager.GetObject("CaptainAmericaLittleDroite", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
-        internal static byte[] Deadpool_256 {
-            get {
-                object obj = ResourceManager.GetObject("Deadpool_256", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -233,16 +203,6 @@ namespace FallingWorld {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] IronMan_256 {
-            get {
-                object obj = ResourceManager.GetObject("IronMan_256", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
         internal static byte[] IronManHead {
             get {
                 object obj = ResourceManager.GetObject("IronManHead", resourceCulture);
@@ -266,16 +226,6 @@ namespace FallingWorld {
         internal static byte[] IronManLittleDroite {
             get {
                 object obj = ResourceManager.GetObject("IronManLittleDroite", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
-        internal static byte[] Jumper {
-            get {
-                object obj = ResourceManager.GetObject("Jumper", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -363,26 +313,6 @@ namespace FallingWorld {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] PlateformLeft {
-            get {
-                object obj = ResourceManager.GetObject("PlateformLeft", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
-        internal static byte[] PlateformRight {
-            get {
-                object obj = ResourceManager.GetObject("PlateformRight", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
         internal static byte[] PlayBackground {
             get {
                 object obj = ResourceManager.GetObject("PlayBackground", resourceCulture);
@@ -453,16 +383,6 @@ namespace FallingWorld {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] Spiderman_256 {
-            get {
-                object obj = ResourceManager.GetObject("Spiderman_256", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
         internal static byte[] SpidermanHead {
             get {
                 object obj = ResourceManager.GetObject("SpidermanHead", resourceCulture);
@@ -486,36 +406,6 @@ namespace FallingWorld {
         internal static byte[] SpidermanLittleDroite {
             get {
                 object obj = ResourceManager.GetObject("SpidermanLittleDroite", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
-        internal static byte[] Tile {
-            get {
-                object obj = ResourceManager.GetObject("Tile", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
-        internal static byte[] Tile2 {
-            get {
-                object obj = ResourceManager.GetObject("Tile2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une ressource localisée de type System.Byte[].
-        /// </summary>
-        internal static byte[] WarMachine_256 {
-            get {
-                object obj = ResourceManager.GetObject("WarMachine_256", resourceCulture);
                 return ((byte[])(obj));
             }
         }
